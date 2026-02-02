@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Number line – Missing value</title>
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --ink: #111827;
+      --muted: #6b7280;
+      --line: #1f2937;
+      --accent: #2563eb;
+      --ok: #16a34a;
+      --bad:#dc2626;
+
+      --label:#374151;
+      --label-soft:#4b5563;
+      --box:#0f172a;
+      --shadow: 0 10px 25px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .wrap{
+      max-width: 1100px;
+      margin: 22px auto 40px;
+      padding: 0 16px;
+    }
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    h1{
+      font-size: 18px;
+      margin:0;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .btnrow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    button{
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor:pointer;
+      background: #f3f4f6;
+      color: #111827;
+      transition: transform .04s ease, filter .15s ease;
+      user-select:none;
+    }
+    button:active{ transform: scale(.98); }
+    button.primary{
+      background: var(--accent);
+      color: white;
+    }
+    button.danger{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+    button.icon{
+      padding: 10px 12px;
+      min-width: 44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-weight: 900;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:#f3f4f6;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color:#111827;
+      font-weight: 800;
+    }
+
+    /* Teacher settings (collapsible) */
+    .teacherbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+    .teacherleft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .settingsBtn{
+      background:#f3f4f6;
+      color:#111827;
+      border:1px solid #e5e7eb;
+    }
+    .chev{
+      display:inline-block;
+      transition: transform .15s ease;
+      font-weight: 900;
+    }
+    .chev.open{ transform: rotate(180deg); }
+
+    .settings{
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
+      display:none;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    .settings.open{ display:grid; }
+    @media (max-width: 780px){
+      .settings{ grid-template-columns: 1fr; }
+    }
+    .panel{
+      background:#f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .panel h3{
+      margin:0 0 8px;
+      font-size: 13px;
+      color:#111827;
+      letter-spacing:.2px;
+    }
+
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .tab{
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color:#1e3a8a;
+      font-weight: 900;
+      font-size: 13px;
+      border:1px solid rgba(37,99,235,.15);
+    }
+    .tab.active{
+      background: var(--accent);
+      color:white;
+      border-color: transparent;
+    }
+
+    .row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .stat{
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .bigstat{
+      font-size: 14px;
+      font-weight: 900;
+      color:#111827;
+    }
+
+    /* Range control sketch style */
+    .rangeControls{
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .triBtn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      padding: 6px 8px;
+      border-radius: 12px;
+      user-select:none;
+    }
+    .tri{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      color:white;
+      flex: 0 0 auto;
+    }
+    .tri.up{ background: rgba(22,163,74,.95); }
+    .tri.down{ background: rgba(220,38,38,.95); }
+    .triText{
+      font-weight: 900;
+      color:#111827;
+      font-size: 14px;
+      line-height: 1.1;
+    }
+
+    /* Stage */
+    .stage{
+      margin-top: 14px;
+      padding: 12px 12px 18px;
+      border-radius: 16px;
+      background: linear-gradient(180deg,#ffffff, #f9fafb);
+      border: 1px solid #e5e7eb;
+      overflow:hidden;
+    }
+    .svgwrap{
+      width:100%;
+      height: 360px;
+    }
+    .footerhint{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      display:flex;
+      justify-content:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* Teacher-only shortcuts hint inside settings */
+    .shortcuts{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      background:#111827;
+      color:white;
+      padding: 2px 6px;
+      border-radius: 7px;
+      font-weight: 900;
+    }
+
+    /* Solid dots (NO wobble) */
+    .tick-dot{
+      transition: opacity .12s ease;
+    }
+    .tick-dot:hover{
+      opacity: 1;
+    }
+
+    /* Animations */
+    @keyframes boxPulse {
+      0%,100% { filter: drop-shadow(0 0 0 rgba(37,99,235,0)); }
+      50%     { filter: drop-shadow(0 0 10px rgba(37,99,235,.35)); }
+    }
+    .box-pulse { animation: boxPulse 1.4s ease-in-out infinite; }
+
+    @keyframes wipeIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .wipe-in { animation: wipeIn .22s ease-out both; }
+
+    @keyframes pop {
+      0%   { transform: scale(0.92); opacity: 0; }
+      60%  { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .pop {
+      animation: pop .22s ease-out both;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="topbar">
+        <div><h1>Number line – Missing value</h1></div>
+        <div class="btnrow">
+          <button id="newBtn" class="primary" title="Space">New Question</button>
+          <button id="revealBtn" class="ghost" title="R">Reveal</button>
+          <button id="resetBtn" class="danger" title="Reset difficulty + history">Reset</button>
+        </div>
+      </div>
+
+      <div class="teacherbar">
+        <div class="teacherleft">
+          <button id="settingsBtn" class="settingsBtn icon" aria-expanded="false">
+            <span style="font-weight:900;">Teacher settings</span>
+            <span id="chev" class="chev">▼</span>
+          </button>
+
+          <span class="pill" id="summaryPill">step x1 · range 0</span>
+          <span class="pill" id="modePill">Hidden</span>
+        </div>
+      </div>
+
+      <div id="settings" class="settings">
+        <div class="panel">
+          <h3>Step size</h3>
+          <div class="tabs" id="stepTabs"></div>
+          <div style="height:10px"></div>
+          <div class="row">
+            <div class="stat">Step =</div>
+            <div class="bigstat" id="stepReadout">1</div>
+            <div class="stat">(integers only)</div>
+          </div>
+
+          <div class="shortcuts">
+            Shortcuts:
+            <span class="kbd">Space</span> new
+            <span class="kbd">R</span> reveal/hide
+<div class="shortcuts" style="margin-top:6px;">
+  Click tick dots to reveal extra labels (optional).
+</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Range (distance of midpoint from zero)</h3>
+          <div class="rangeControls" style="margin-top:8px;">
+            <div class="triBtn" id="rangeUp" title="Increase range">
+              <div class="tri up">▲</div>
+              <div class="triText">Increase range</div>
+            </div>
+
+            <div class="triBtn" id="rangeDown" title="Decrease range">
+              <div class="tri down">▼</div>
+              <div class="triText">Decrease range</div>
+            </div>
+
+            <span class="pill">Δ = 10</span>
+            <span class="pill">max = 200</span>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <div class="stat">Current range level:</div>
+            <div class="bigstat" id="rangeReadout">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <svg id="svg" class="svgwrap" viewBox="0 0 1000 360" role="img" aria-label="number line"></svg>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const STEP_OPTIONS = [1,2,3,4,5,10];
+  const MAX_RANGE_LEVEL = 200;
+  const RANGE_DELTA = 10;
+
+  let step = 1;
+  let rangeLevel = 0;
+  let revealed = false;
+  let settingsOpen = false;
+
+  let q = null;
+  const last5 = [];
+
+  let refs = null; // { labelsByIndex, labelsG, labelY, xFn, dots, ticks }
+
+  const svg = document.getElementById('svg');
+  const newBtn = document.getElementById('newBtn');
+  const revealBtn = document.getElementById('revealBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  const rangeUp = document.getElementById('rangeUp');
+  const rangeDown = document.getElementById('rangeDown');
+
+  const stepTabs = document.getElementById('stepTabs');
+  const stepReadout = document.getElementById('stepReadout');
+  const rangeReadout = document.getElementById('rangeReadout');
+
+  const summaryPill = document.getElementById('summaryPill');
+  const modePill = document.getElementById('modePill');
+
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settings = document.getElementById('settings');
+  const chev = document.getElementById('chev');
+
+  const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+  const choice = (arr) => arr[randInt(0, arr.length-1)];
+
+  function isNiceAnchor(v){
+    const av = Math.abs(v);
+    if (av >= 100) return v % 100 === 0 || v % 10 === 0;
+    if (av >= 10)  return v % 10 === 0;
+    return true;
+  }
+  function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+
+  function updatePills(){
+    summaryPill.textContent = `step x${step} · range ${rangeLevel}`;
+    modePill.textContent = revealed ? "Revealed" : "Hidden";
+    revealBtn.textContent = revealed ? "Hide" : "Reveal";
+  }
+  function setSettingsOpen(open){
+    settingsOpen = open;
+    settings.classList.toggle('open', settingsOpen);
+    chev.classList.toggle('open', settingsOpen);
+    settingsBtn.setAttribute('aria-expanded', String(settingsOpen));
+  }
+
+  function signatureFor(question){
+    const answer = question.values[question.targetIndex];
+    return { answer, targetIndex: question.targetIndex, step, start: question.start, includesNegatives: question.includesNegatives };
+  }
+  function matchesAnyRecent(sig){
+    for (const s of last5){
+      if (s.answer === sig.answer) return true;
+      if (s.targetIndex === sig.targetIndex) return true;
+      if (s.step === sig.step && s.start === sig.start) return true;
+      if (s.includesNegatives === sig.includesNegatives && s.step === sig.step && s.targetIndex === sig.targetIndex) return true;
+    }
+    return false;
+  }
+
+  function pickAnchors(values, targetIndex){
+    const pairs = [];
+    for (let i=0; i<10; i++){
+      if (i === targetIndex) continue;
+      if (i+1 === targetIndex) continue;
+      const v1 = values[i], v2 = values[i+1];
+      let score = 0;
+      if (isNiceAnchor(v1)) score += 2;
+      if (isNiceAnchor(v2)) score += 2;
+      pairs.push({i, score});
+    }
+    pairs.sort((a,b) => b.score - a.score);
+    const bestScore = pairs.length ? pairs[0].score : 0;
+    const topPairs = pairs.filter(p => p.score === bestScore);
+    const pair = topPairs.length ? choice(topPairs) : {i: randInt(0,9)};
+
+    const idxA = pair.i;
+    const idxB = pair.i + 1;
+
+    const farCandidates = [];
+    for (let j=0; j<11; j++){
+      if (j === targetIndex) continue;
+      if (j === idxA || j === idxB) continue;
+      const v = values[j];
+      let score = 0;
+      if (isNiceAnchor(v)) score += 3;
+      score += Math.abs(j - idxA) * 0.25;
+      farCandidates.push({j, score});
+    }
+    farCandidates.sort((a,b) => b.score - a.score);
+    const bestFar = farCandidates.length ? farCandidates[0].score : 0;
+    const topFar = farCandidates.filter(c => c.score === bestFar);
+    const far = topFar.length ? choice(topFar).j : randInt(0,10);
+
+    return new Set([idxA, idxB, far]);
+  }
+
+  function generateQuestion(){
+    for (let attempt=0; attempt<250; attempt++){
+      const includesNeg = Math.random() < 0.30;
+
+      let center;
+      if (includesNeg){
+        const sign = (Math.random() < 0.70) ? -1 : 1;
+        center = sign * rangeLevel + randInt(-2, 2) * step;
+      } else {
+        center = rangeLevel + randInt(-2, 2) * step;
+        if (center < 5*step) center = 5*step;
+      }
+
+      let start = center - 5*step;
+      if (!includesNeg && start < 0) start = 0;
+
+      const values = Array.from({length:11}, (_,i)=> start + i*step);
+
+      if (includesNeg && !values.some(v => v < 0)) continue;
+
+      const weighted = [];
+      for (let i=0;i<11;i++){
+        let w = 1;
+        if (i===0 || i===10) w = 0.8;
+        if (i===5) w = 0.9;
+        for (let k=0;k<Math.round(w*10);k++) weighted.push(i);
+      }
+      const targetIndex = choice(weighted);
+
+      const anchors = pickAnchors(values, targetIndex);
+      if (anchors.has(targetIndex)) continue;
+
+      const question = {
+        start,
+        values,
+        targetIndex,
+        anchors,
+        teacherRevealed: new Set(),
+        includesNegatives: includesNeg
+      };
+
+      const sig = signatureFor(question);
+      if (matchesAnyRecent(sig)) continue;
+
+      last5.push(sig);
+      while (last5.length > 5) last5.shift();
+
+      return question;
+    }
+
+    return {
+      start: 0,
+      values: Array.from({length:11}, (_,i)=>i*step),
+      targetIndex: 4,
+      anchors: new Set([0,1,10]),
+      teacherRevealed: new Set(),
+      includesNegatives: false
+    };
+  }
+
+  function clearSVG(){
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    refs = null;
+  }
+  function el(name, attrs={}, children=[]){
+    const n = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for (const [k,v] of Object.entries(attrs)) n.setAttribute(k, String(v));
+    for (const c of children) n.appendChild(c);
+    return n;
+  }
+  function textNode(str, attrs={}){
+    const t = el('text', attrs);
+    t.textContent = str;
+    return t;
+  }
+
+  function buildHiddenScene(question){
+    clearSVG();
+
+    const left=90, right=910;
+    const yLine=160;
+    const tickTop=yLine-14, tickBot=yLine+14;
+    const n=11;
+    const x = (i) => left + (right-left)* (i/(n-1));
+    const labelY = 248;
+
+    svg.appendChild(textNode("What is the missing value?", {
+      x: 500, y: 56, "text-anchor":"middle",
+      "font-size":"30", "font-weight":"950", fill:"#111827"
+    }));
+    svg.appendChild(textNode("Write it. Show me. Reveal.", {
+      x: 500, y: 86, "text-anchor":"middle",
+      "font-size":"14", "font-weight":"850", fill:"#9ca3af"
+    }));
+
+    svg.appendChild(el('line', {
+      x1:left, y1:yLine, x2:right, y2:yLine,
+      stroke: "#1f2937", "stroke-width":"4", "stroke-linecap":"round"
+    }));
+
+    const ticksG = el('g', {});
+    const dotsG  = el('g', {});
+    const labelsG= el('g', {});
+    const boxG   = el('g', { id: "mysteryBox" });
+
+    const labelsByIndex = new Map();
+    const ticks = [];
+    const dots = [];
+
+    function highlightTeacher(idx){
+      // keep it subtle; NO resizing (avoids movement)
+      const tick = ticks[idx];
+      const dot  = dots[idx];
+      if (tick) tick.setAttribute("stroke-width", "5");
+      if (dot){
+        dot.setAttribute("opacity", "1");
+        dot.setAttribute("fill", "#2563eb");
+      }
+    }
+
+    function ensureLabel(idx, animate){
+      if (labelsByIndex.has(idx)) return;
+      if (idx === question.targetIndex) return;
+
+      const allowed = question.anchors.has(idx) || question.teacherRevealed.has(idx);
+      if (!allowed) return;
+
+      const t = textNode(String(question.values[idx]), {
+        x: x(idx),
+        y: labelY,
+        "text-anchor":"middle",
+        "font-size":"24",
+        "font-weight":"900",
+        fill: "var(--label)"
+      });
+      if (animate) t.classList.add("wipe-in");
+      labelsG.appendChild(t);
+      labelsByIndex.set(idx, t);
+
+      if (question.teacherRevealed.has(idx)) highlightTeacher(idx);
+    }
+
+    function handleTickClick(idx){
+      if (revealed) return;
+      if (idx === question.targetIndex) return;
+      question.teacherRevealed.add(idx);
+      ensureLabel(idx, true);
+      highlightTeacher(idx);
+    }
+
+    for (let i=0;i<n;i++){
+      const xi = x(i);
+
+      const tick = el('line', {
+        x1:xi, y1:tickTop, x2:xi, y2:tickBot,
+        stroke:"#1f2937", "stroke-width":"4",
+        "stroke-linecap":"round"
+      });
+      tick.style.cursor = "pointer";
+      tick.addEventListener('click', () => handleTickClick(i));
+      ticksG.appendChild(tick);
+      ticks.push(tick);
+
+      const dot = el('circle', {
+        cx: xi, cy: yLine,
+        r: 7,
+        fill: "#111827",
+        opacity: 0.75
+      });
+      dot.classList.add("tick-dot");
+      dot.style.cursor = "pointer";
+      dot.addEventListener('click', () => handleTickClick(i));
+      dotsG.appendChild(dot);
+      dots.push(dot);
+    }
+
+    // initial anchors
+    for (const idx of question.anchors){
+      if (idx !== question.targetIndex) ensureLabel(idx, false);
+    }
+
+    // mystery box (id fixed: mysteryBox)
+    const tx = x(question.targetIndex);
+    const boxW=64, boxH=44;
+    const boxX = tx - boxW/2;
+    const boxY = labelY - 34;
+
+    const rect = el('rect', {
+      x: boxX, y: boxY,
+      width: boxW, height: boxH,
+      rx: 12, ry: 12,
+      fill: "var(--box)"
+    });
+    rect.classList.add("box-pulse");
+
+    const qmark = textNode("?", {
+      x: tx, y: boxY + 31,
+      "text-anchor":"middle",
+      "font-size":"28",
+      "font-weight":"950",
+      fill:"#ffffff"
+    });
+
+    boxG.appendChild(rect);
+    boxG.appendChild(qmark);
+
+    svg.appendChild(ticksG);
+    svg.appendChild(dotsG);
+    svg.appendChild(labelsG);
+    svg.appendChild(boxG);
+
+    refs = { labelsByIndex, labelsG, labelY, xFn: x, dots, ticks };
+  }
+
+  function revealAllLabels(question){
+    if (!refs) return;
+
+    // Always remove the mystery box by id (robust)
+    svg.querySelector('#mysteryBox')?.remove();
+
+    for (let i=0;i<11;i++){
+      if (refs.labelsByIndex.has(i)) continue;
+
+      const t = textNode(String(question.values[i]), {
+        x: refs.xFn(i),
+        y: refs.labelY,
+        "text-anchor":"middle",
+        "font-weight":"900",
+        fill: "var(--label-soft)",
+        "font-size":"24"
+      });
+
+      const isAnswer = (i === question.targetIndex);
+      if (isAnswer){
+        t.setAttribute("fill", "var(--ok)");
+        t.setAttribute("font-size", "34");
+        t.setAttribute("font-weight", "950");
+        t.classList.add("pop");
+      } else {
+        t.classList.add("wipe-in");
+        t.style.animationDelay = (i * 0.04) + "s";
+      }
+
+      refs.labelsG.appendChild(t);
+      refs.labelsByIndex.set(i, t);
+    }
+  }
+
+  function hideToPrompt(question){
+    if (!refs) return;
+
+    // clear teacher revealed
+    question.teacherRevealed.clear();
+
+    // remove labels that are not anchors
+    for (let i=0;i<11;i++){
+      const lab = refs.labelsByIndex.get(i);
+      if (!lab) continue;
+
+      const keep = question.anchors.has(i);
+      if (!keep){
+        lab.remove();
+        refs.labelsByIndex.delete(i);
+      }
+    }
+
+    // reset highlighting
+    for (let i=0;i<11;i++){
+      if (refs.ticks[i]) refs.ticks[i].setAttribute("stroke-width", "4");
+      if (refs.dots[i]){
+        refs.dots[i].setAttribute("opacity", "0.75");
+        refs.dots[i].setAttribute("fill", "#111827");
+      }
+    }
+
+    // restore mystery box if missing
+    if (!svg.querySelector('#mysteryBox')){
+      const tx = refs.xFn(question.targetIndex);
+      const boxW=64, boxH=44;
+      const boxX = tx - boxW/2;
+      const boxY = refs.labelY - 34;
+
+      const boxG = el('g', { id: "mysteryBox" });
+
+      const rect = el('rect', {
+        x: boxX, y: boxY,
+        width: boxW, height: boxH,
+        rx: 12, ry: 12,
+        fill: "var(--box)"
+      });
+      rect.classList.add("box-pulse");
+
+      const qmark = textNode("?", {
+        x: tx, y: boxY + 31,
+        "text-anchor":"middle",
+        "font-size":"28",
+        "font-weight":"950",
+        fill:"#ffffff"
+      });
+
+      boxG.appendChild(rect);
+      boxG.appendChild(qmark);
+      svg.appendChild(boxG);
+    }
+  }
+
+  function render(){
+    updatePills();
+    stepReadout.textContent = String(step);
+    rangeReadout.textContent = String(rangeLevel);
+
+    if (!q){
+      q = generateQuestion();
+      revealed = false;
+      buildHiddenScene(q);
+      return;
+    }
+
+    if (!refs){
+      buildHiddenScene(q);
+      return;
+    }
+
+    if (revealed){
+      revealAllLabels(q);
+    } else {
+      hideToPrompt(q);
+    }
+  }
+
+  function buildStepTabs(){
+    stepTabs.innerHTML = "";
+    for (const opt of STEP_OPTIONS){
+      const b = document.createElement('button');
+      b.className = 'tab' + (opt === step ? ' active' : '');
+      b.textContent = `x${opt}`;
+      b.addEventListener('click', () => {
+        step = opt;
+        revealed = false;
+        q = generateQuestion();
+        buildStepTabs();
+        buildHiddenScene(q);
+        render();
+      });
+      stepTabs.appendChild(b);
+    }
+  }
+
+  newBtn.addEventListener('click', () => {
+    revealed = false;
+    q = generateQuestion();
+    buildHiddenScene(q);
+    render();
+  });
+
+  revealBtn.addEventListener('click', () => {
+    revealed = !revealed;
+    render();
+  });
+
+  rangeUp.addEventListener('click', () => {
+    rangeLevel = clamp(rangeLevel + RANGE_DELTA, 0, MAX_RANGE_LEVEL);
+    revealed = false;
+    q = generateQuestion();
+    buildHiddenScene(q);
+    render();
+  });
+
+  rangeDown.addEventListener('click', () => {
+    rangeLevel = clamp(rangeLevel - RANGE_DELTA, 0, MAX_RANGE_LEVEL);
+    revealed = false;
+    q = generateQuestion();
+    buildHiddenScene(q);
+    render();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    step = 1;
+    rangeLevel = 0;
+    revealed = false;
+    last5.length = 0;
+    q = null;
+    buildStepTabs();
+    clearSVG();
+    render();
+  });
+
+  settingsBtn.addEventListener('click', () => {
+    setSettingsOpen(!settingsOpen);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === "Space"){
+      e.preventDefault();
+      revealed = false;
+      q = generateQuestion();
+      buildHiddenScene(q);
+      render();
+    }
+    if (e.key.toLowerCase() === "r"){
+      e.preventDefault();
+      revealed = !revealed;
+      render();
+    }
+  });
+
+  buildStepTabs(); 
+  setSettingsOpen(false);
+  q = generateQuestion();
+  buildHiddenScene(q);
+  render();
+})();
+</script>
+</body>
+</html>
