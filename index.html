@@ -23,6 +23,7 @@
 
       --border:#e5e7eb;
       --panel:#ffffff;
+      --warn:#f59e0b;
     }
 
     *{ box-sizing:border-box; }
@@ -105,6 +106,11 @@
       font-size: 12px;
       color:#111827;
       font-weight: 800;
+    }
+    .pill.warn{
+      background:#fffbeb;
+      color:#92400e;
+      border:1px solid rgba(245,158,11,.25);
     }
 
     /* ---------- Tools dropdown (robust) ---------- */
@@ -222,26 +228,6 @@
       letter-spacing:.2px;
     }
 
-    .tabs{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-    .tab{
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color:#1e3a8a;
-      font-weight: 900;
-      font-size: 13px;
-      border:1px solid rgba(37,99,235,.15);
-    }
-    .tab.active{
-      background: var(--accent);
-      color:white;
-      border-color: transparent;
-    }
-
     .row{
       display:flex;
       align-items:center;
@@ -259,40 +245,96 @@
       color:#111827;
     }
 
-    /* Range control sketch style */
-    .rangeControls{
+    /* Inputs */
+    .field{
       display:flex;
-      align-items:flex-start;
-      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 8px;
       flex-wrap:wrap;
     }
-    .triBtn{
+    .field label{
+      font-weight: 900;
+      color:#111827;
+      font-size: 13px;
+    }
+    .inp{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    input[type="text"]{
+      width: 140px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      outline: none;
+      font-weight: 900;
+      color:#111827;
+      background:#fff;
+    }
+    input[type="text"]:focus{
+      border-color: rgba(37,99,235,.45);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+    }
+    .err{
+      display:none;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--bad);
+    }
+    .err.show{ display:block; }
+
+    /* Toggle */
+    .toggle{
       display:flex;
       align-items:center;
       gap:10px;
-      cursor:pointer;
-      padding: 6px 8px;
-      border-radius: 12px;
+      margin-top: 10px;
       user-select:none;
+      cursor:pointer;
     }
-    .tri{
-      width: 34px;
-      height: 34px;
+    .switch{
+      width: 44px;
+      height: 26px;
       border-radius: 999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight: 1000;
-      color:white;
+      background:#e5e7eb;
+      position:relative;
+      border:1px solid #d1d5db;
       flex: 0 0 auto;
+      transition: background .15s ease;
     }
-    .tri.up{ background: rgba(22,163,74,.95); }
-    .tri.down{ background: rgba(220,38,38,.95); }
-    .triText{
+    .knob{
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background:#fff;
+      position:absolute;
+      left:2px;
+      top:1px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.12);
+      transition: transform .15s ease;
+    }
+    .toggle.on .switch{
+      background: rgba(37,99,235,.95);
+      border-color: rgba(37,99,235,.25);
+    }
+    .toggle.on .knob{
+      transform: translateX(18px);
+    }
+    .toggleText{
       font-weight: 900;
+      font-size: 13px;
       color:#111827;
-      font-size: 14px;
-      line-height: 1.1;
+      line-height: 1.15;
+    }
+    .toggleHint{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-top: 2px;
     }
 
     /* Stage */
@@ -402,7 +444,7 @@
             </div>
           </div>
 
-          <button id="resetBtn" class="danger" title="Reset difficulty + history">Reset</button>
+          <button id="resetBtn" class="danger" title="Reset settings + history">Reset</button>
         </div>
       </div>
 
@@ -413,21 +455,28 @@
             <span id="chev" class="chev">▼</span>
           </button>
 
-          <span class="pill" id="summaryPill">step x1 · range 0</span>
+          <span class="pill" id="summaryPill">step 1 · midpoint 0</span>
+          <span class="pill" id="negPill">Negatives: off</span>
           <span class="pill" id="modePill">Hidden</span>
+          <span class="pill warn" id="pendingPill" style="display:none;">Pending changes (apply on Next)</span>
         </div>
       </div>
 
       <div id="settings" class="settings">
         <div class="panel">
           <h3>Step size</h3>
-          <div class="tabs" id="stepTabs"></div>
-          <div style="height:10px"></div>
-          <div class="row">
-            <div class="stat">Step =</div>
-            <div class="bigstat" id="stepReadout">1</div>
-            <div class="stat">(integers only)</div>
+          <div class="field">
+            <label for="stepInput">Enter step size</label>
+            <div class="inp">
+              <input id="stepInput" type="text" inputmode="decimal" autocomplete="off" />
+            </div>
           </div>
+          <div class="row" style="margin-top:10px;">
+            <div class="stat">Max:</div>
+            <div class="bigstat">1000</div>
+            <div class="stat">· 1 decimal place</div>
+          </div>
+          <div class="err" id="stepErr">Please enter a number greater than 0 (up to 1000), max 1 decimal place.</div>
 
           <div class="shortcuts">
             Shortcuts:
@@ -440,25 +489,26 @@
         </div>
 
         <div class="panel">
-          <h3>Range (distance of midpoint from zero)</h3>
-          <div class="rangeControls" style="margin-top:8px;">
-            <div class="triBtn" id="rangeUp" title="Increase range">
-              <div class="tri up">▲</div>
-              <div class="triText">Increase range</div>
+          <h3>Midpoint (middle tick value)</h3>
+          <div class="field">
+            <label for="midInput">Enter midpoint</label>
+            <div class="inp">
+              <input id="midInput" type="text" inputmode="decimal" autocomplete="off" />
             </div>
-
-            <div class="triBtn" id="rangeDown" title="Decrease range">
-              <div class="tri down">▼</div>
-              <div class="triText">Decrease range</div>
-            </div>
-
-            <span class="pill">Δ = 10</span>
-            <span class="pill">max = 200</span>
           </div>
-
           <div class="row" style="margin-top:10px;">
-            <div class="stat">Current range level:</div>
-            <div class="bigstat" id="rangeReadout">0</div>
+            <div class="stat">Range:</div>
+            <div class="bigstat">-10000 to 10000</div>
+            <div class="stat">· 1 decimal place</div>
+          </div>
+          <div class="err" id="midErr">Please enter a number from -10000 to 10000, max 1 decimal place.</div>
+
+          <div class="toggle" id="negToggle" title="Bias questions toward negative-side missing values when negatives exist on the line">
+            <div class="switch"><div class="knob"></div></div>
+            <div>
+              <div class="toggleText">Prefer negatives</div>
+              <div class="toggleHint">Only applies if the line includes negatives.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -476,12 +526,21 @@
 
 <script>
 (() => {
-  const STEP_OPTIONS = [1,2,3,4,5,10];
-  const MAX_RANGE_LEVEL = 200;
-  const RANGE_DELTA = 10;
+  // Limits + formatting rules
+  const STEP_MAX = 1000;
+  const MID_MIN = -10000;
+  const MID_MAX =  10000;
 
-  let step = 1;
-  let rangeLevel = 0;
+  // Current applied settings
+  let step = 1.0;
+  let midpoint = 0.0;
+  let preferNegatives = false;
+
+  // Pending settings (apply on Next)
+  let pendingStep = step;
+  let pendingMid  = midpoint;
+  let pendingDirty = false;
+
   let revealed = false;
   let settingsOpen = false;
 
@@ -496,19 +555,23 @@
   const revealBtn = document.getElementById('revealBtn');
   const resetBtn = document.getElementById('resetBtn');
 
-  const rangeUp = document.getElementById('rangeUp');
-  const rangeDown = document.getElementById('rangeDown');
-
-  const stepTabs = document.getElementById('stepTabs');
-  const stepReadout = document.getElementById('stepReadout');
-  const rangeReadout = document.getElementById('rangeReadout');
-
   const summaryPill = document.getElementById('summaryPill');
   const modePill = document.getElementById('modePill');
+  const negPill = document.getElementById('negPill');
+  const pendingPill = document.getElementById('pendingPill');
 
   const settingsBtn = document.getElementById('settingsBtn');
   const settings = document.getElementById('settings');
   const chev = document.getElementById('chev');
+
+  // Inputs
+  const stepInput = document.getElementById('stepInput');
+  const midInput  = document.getElementById('midInput');
+  const stepErr   = document.getElementById('stepErr');
+  const midErr    = document.getElementById('midErr');
+
+  // Prefer negatives toggle
+  const negToggle = document.getElementById('negToggle');
 
   // Tools dropdown elements
   const toolsWrap = document.getElementById('toolsWrap');
@@ -517,22 +580,48 @@
   const toolWorksheet = document.getElementById('toolWorksheet');
   const toolQuiz = document.getElementById('toolQuiz');
 
+  const EPS = 1e-9;
+
   const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
   const choice = (arr) => arr[randInt(0, arr.length-1)];
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
-  function isNiceAnchor(v){
-    const av = Math.abs(v);
-    if (av >= 100) return v % 100 === 0 || v % 10 === 0;
-    if (av >= 10)  return v % 10 === 0;
-    return true;
+  function round1(x){ return Math.round(x * 10) / 10; }
+
+  // Display formatting: drop trailing .0
+  function fmt(x){
+    const r = round1(x);
+    if (Math.abs(r - Math.round(r)) < EPS) return String(Math.round(r));
+    return r.toFixed(1);
   }
-  function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+
+  // Parse + validate a number with max 1 decimal place
+  function parseOneDecimal(str){
+    const s = (str ?? "").trim();
+    if (!s) return { ok:false };
+    // allow leading +/-, digits, optional .digits
+    if (!/^[+-]?\d+(\.\d+)?$/.test(s)) return { ok:false };
+    const n = Number(s);
+    if (!Number.isFinite(n)) return { ok:false };
+    // enforce <= 1 decimal place
+    const oneDec = round1(n);
+    if (Math.abs(n - oneDec) > 1e-6) return { ok:false };
+    return { ok:true, value: oneDec };
+  }
+
+  function setPendingDirty(on){
+    pendingDirty = on;
+    pendingPill.style.display = pendingDirty ? "inline-flex" : "none";
+  }
 
   function updatePills(){
-    summaryPill.textContent = `step x${step} · range ${rangeLevel}`;
+    summaryPill.textContent = `step ${fmt(step)} · midpoint ${fmt(midpoint)}`;
+    negPill.textContent = `Negatives: ${preferNegatives ? "prefer" : "off"}`;
     modePill.textContent = revealed ? "Revealed" : "Hidden";
     revealBtn.textContent = revealed ? "Hide (R)" : "Reveal (R)";
+    negToggle.classList.toggle("on", preferNegatives);
   }
+
   function setSettingsOpen(open){
     settingsOpen = open;
     settings.classList.toggle('open', settingsOpen);
@@ -581,16 +670,38 @@
     openInNewTab("studentquiz.html");
   });
 
+  // "Nice anchor" scoring (float-safe)
+  function isNiceAnchor(v){
+    const av = Math.abs(v);
+
+    // Prefer integers strongly
+    const isInt = Math.abs(v - Math.round(v)) < EPS;
+
+    if (!isInt) {
+      // If not integer, still treat .0 (handled above) and allow 0.5-style as mildly "nice"
+      // but less nice than integers.
+      const frac = Math.abs(v - Math.floor(v));
+      const isHalf = Math.abs(frac - 0.5) < EPS;
+      if (isHalf) return av < 10; // only "nice" at small magnitudes
+      return false;
+    }
+
+    // Integer rules (same spirit as your original)
+    const iv = Math.round(v);
+    if (av >= 100) return iv % 100 === 0 || iv % 10 === 0;
+    if (av >= 10)  return iv % 10 === 0;
+    return true;
+  }
+
   function signatureFor(question){
     const answer = question.values[question.targetIndex];
-    return { answer, targetIndex: question.targetIndex, step, start: question.start, includesNegatives: question.includesNegatives };
+    return { answer, targetIndex: question.targetIndex, step, midpoint };
   }
   function matchesAnyRecent(sig){
     for (const s of last5){
-      if (s.answer === sig.answer) return true;
+      if (Math.abs(s.answer - sig.answer) < EPS) return true;
       if (s.targetIndex === sig.targetIndex) return true;
-      if (s.step === sig.step && s.start === sig.start) return true;
-      if (s.includesNegatives === sig.includesNegatives && s.step === sig.step && s.targetIndex === sig.targetIndex) return true;
+      if (Math.abs(s.step - sig.step) < EPS && Math.abs(s.midpoint - sig.midpoint) < EPS && s.targetIndex === sig.targetIndex) return true;
     }
     return false;
   }
@@ -632,45 +743,61 @@
     return new Set([idxA, idxB, far]);
   }
 
+  function buildValuesFromMidpoint(){
+    const vals = [];
+    for (let i=0;i<11;i++){
+      const v = round1(midpoint + (i - 5) * step);
+      vals.push(v);
+    }
+    return vals;
+  }
+
+  function chooseTargetIndex(values){
+    // Weighted like before, but optionally bias toward negative values
+    const anyNeg = values.some(v => v < 0);
+
+    // base weights
+    const weightedAll = [];
+    for (let i=0;i<11;i++){
+      let w = 1;
+      if (i===0 || i===10) w = 0.8;
+      if (i===5) w = 0.9;
+      for (let k=0;k<Math.round(w*10);k++) weightedAll.push(i);
+    }
+
+    if (preferNegatives && anyNeg){
+      const negIdx = values.map((v,i)=> (v < 0 ? i : null)).filter(v => v !== null);
+      const weightedNeg = [];
+      for (const i of negIdx){
+        let w = 1.15; // slight boost
+        if (i===0 || i===10) w = 0.95;
+        if (i===5) w = 1.0;
+        for (let k=0;k<Math.round(w*10);k++) weightedNeg.push(i);
+      }
+
+      // 70%: pick from negative side, else normal
+      if (weightedNeg.length && Math.random() < 0.70){
+        return choice(weightedNeg);
+      }
+    }
+
+    return choice(weightedAll);
+  }
+
   function generateQuestion(){
-    for (let attempt=0; attempt<250; attempt++){
-      const includesNeg = Math.random() < 0.30;
-
-      let center;
-      if (includesNeg){
-        const sign = (Math.random() < 0.70) ? -1 : 1;
-        center = sign * rangeLevel + randInt(-2, 2) * step;
-      } else {
-        center = rangeLevel + randInt(-2, 2) * step;
-        if (center < 5*step) center = 5*step;
-      }
-
-      let start = center - 5*step;
-      if (!includesNeg && start < 0) start = 0;
-
-      const values = Array.from({length:11}, (_,i)=> start + i*step);
-
-      if (includesNeg && !values.some(v => v < 0)) continue;
-
-      const weighted = [];
-      for (let i=0;i<11;i++){
-        let w = 1;
-        if (i===0 || i===10) w = 0.8;
-        if (i===5) w = 0.9;
-        for (let k=0;k<Math.round(w*10);k++) weighted.push(i);
-      }
-      const targetIndex = choice(weighted);
+    // With fixed midpoint + step, only target/anchors vary.
+    for (let attempt=0; attempt<120; attempt++){
+      const values = buildValuesFromMidpoint();
+      const targetIndex = chooseTargetIndex(values);
 
       const anchors = pickAnchors(values, targetIndex);
       if (anchors.has(targetIndex)) continue;
 
       const question = {
-        start,
         values,
         targetIndex,
         anchors,
-        teacherRevealed: new Set(),
-        includesNegatives: includesNeg
+        teacherRevealed: new Set()
       };
 
       const sig = signatureFor(question);
@@ -682,13 +809,13 @@
       return question;
     }
 
+    // Fallback
+    const values = buildValuesFromMidpoint();
     return {
-      start: 0,
-      values: Array.from({length:11}, (_,i)=>i*step),
+      values,
       targetIndex: 4,
       anchors: new Set([0,1,10]),
-      teacherRevealed: new Set(),
-      includesNegatives: false
+      teacherRevealed: new Set()
     };
   }
 
@@ -758,7 +885,7 @@
       const allowed = question.anchors.has(idx) || question.teacherRevealed.has(idx);
       if (!allowed) return;
 
-      const t = textNode(String(question.values[idx]), {
+      const t = textNode(fmt(question.values[idx]), {
         x: x(idx),
         y: labelY,
         "text-anchor":"middle",
@@ -851,7 +978,7 @@
     for (let i=0;i<11;i++){
       if (refs.labelsByIndex.has(i)) continue;
 
-      const t = textNode(String(question.values[i]), {
+      const t = textNode(fmt(question.values[i]), {
         x: refs.xFn(i),
         y: refs.labelY,
         "text-anchor":"middle",
@@ -932,8 +1059,6 @@
 
   function render(){
     updatePills();
-    stepReadout.textContent = String(step);
-    rangeReadout.textContent = String(rangeLevel);
 
     if (!q){
       q = generateQuestion();
@@ -954,61 +1079,106 @@
     }
   }
 
-  function buildStepTabs(){
-    stepTabs.innerHTML = "";
-    for (const opt of STEP_OPTIONS){
-      const b = document.createElement('button');
-      b.className = 'tab' + (opt === step ? ' active' : '');
-      b.textContent = `x${opt}`;
-      b.addEventListener('click', () => {
-        step = opt;
-        revealed = false;
-        q = generateQuestion();
-        buildStepTabs();
-        buildHiddenScene(q);
-        render();
-      });
-      stepTabs.appendChild(b);
-    }
+  // ---------- Validation + pending settings ----------
+  function validateStepField(s){
+    const parsed = parseOneDecimal(s);
+    if (!parsed.ok) return { ok:false };
+    if (parsed.value <= 0) return { ok:false };
+    if (parsed.value > STEP_MAX) return { ok:false };
+    return parsed;
+  }
+  function validateMidField(s){
+    const parsed = parseOneDecimal(s);
+    if (!parsed.ok) return { ok:false };
+    if (parsed.value < MID_MIN || parsed.value > MID_MAX) return { ok:false };
+    return parsed;
   }
 
-  // Bottom buttons
-  nextBtn.addEventListener('click', () => {
+  function syncFieldsFromApplied(){
+    stepInput.value = fmt(step);
+    midInput.value  = fmt(midpoint);
+    stepErr.classList.remove("show");
+    midErr.classList.remove("show");
+    setPendingDirty(false);
+    pendingStep = step;
+    pendingMid  = midpoint;
+  }
+
+  function handleStepInput(){
+    const v = validateStepField(stepInput.value);
+    if (!v.ok){
+      stepErr.classList.add("show");
+      return false;
+    }
+    stepErr.classList.remove("show");
+    pendingStep = v.value;
+    setPendingDirty(Math.abs(pendingStep - step) > EPS || Math.abs(pendingMid - midpoint) > EPS);
+    return true;
+  }
+
+  function handleMidInput(){
+    const v = validateMidField(midInput.value);
+    if (!v.ok){
+      midErr.classList.add("show");
+      return false;
+    }
+    midErr.classList.remove("show");
+    pendingMid = v.value;
+    setPendingDirty(Math.abs(pendingStep - step) > EPS || Math.abs(pendingMid - midpoint) > EPS);
+    return true;
+  }
+
+  function applyPendingIfValid(){
+    const okStep = handleStepInput();
+    const okMid  = handleMidInput();
+    if (!okStep || !okMid) return false;
+
+    // apply
+    step = pendingStep;
+    midpoint = pendingMid;
+    setPendingDirty(false);
+    return true;
+  }
+
+  // Apply inputs only on Next
+  function nextQuestion(){
+    // Try apply pending; if invalid, don't advance
+    if (!applyPendingIfValid()) return;
+
     revealed = false;
     q = generateQuestion();
     buildHiddenScene(q);
     render();
+  }
+
+  // Input listeners: validate and mark pending, but do not regenerate
+  stepInput.addEventListener("input", () => { handleStepInput(); });
+  midInput.addEventListener("input",  () => { handleMidInput(); });
+
+  // Toggle
+  negToggle.addEventListener("click", () => {
+    preferNegatives = !preferNegatives;
+    updatePills();
   });
+
+  // Bottom buttons
+  nextBtn.addEventListener('click', () => nextQuestion());
 
   revealBtn.addEventListener('click', () => {
     revealed = !revealed;
     render();
   });
 
-  // Teacher controls
-  rangeUp.addEventListener('click', () => {
-    rangeLevel = clamp(rangeLevel + RANGE_DELTA, 0, MAX_RANGE_LEVEL);
-    revealed = false;
-    q = generateQuestion();
-    buildHiddenScene(q);
-    render();
-  });
-
-  rangeDown.addEventListener('click', () => {
-    rangeLevel = clamp(rangeLevel - RANGE_DELTA, 0, MAX_RANGE_LEVEL);
-    revealed = false;
-    q = generateQuestion();
-    buildHiddenScene(q);
-    render();
-  });
-
   resetBtn.addEventListener('click', () => {
-    step = 1;
-    rangeLevel = 0;
+    step = 1.0;
+    midpoint = 0.0;
+    preferNegatives = false;
+
     revealed = false;
     last5.length = 0;
     q = null;
-    buildStepTabs();
+
+    syncFieldsFromApplied();
     clearSVG();
     render();
   });
@@ -1021,10 +1191,7 @@
   document.addEventListener('keydown', (e) => {
     if (e.code === "Space"){
       e.preventDefault();
-      revealed = false;
-      q = generateQuestion();
-      buildHiddenScene(q);
-      render();
+      nextQuestion();
     }
     if (e.key.toLowerCase() === "r"){
       e.preventDefault();
@@ -1033,8 +1200,10 @@
     }
   });
 
-  buildStepTabs();
+  // Initial state: auto load midpoint=0 step=1
   setSettingsOpen(false);
+  syncFieldsFromApplied();
+
   q = generateQuestion();
   buildHiddenScene(q);
   render();
