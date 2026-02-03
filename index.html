@@ -103,6 +103,32 @@
       font-weight: 800;
     }
 
+    /* Tools dropdown */
+    .menuWrap{ position: relative; }
+    .menu{
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 210px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.12);
+      padding: 6px;
+      display: none;
+      z-index: 50;
+    }
+    .menu.open{ display:block; }
+    .menuItem{
+      width: 100%;
+      text-align: left;
+      border-radius: 12px;
+      padding: 10px 10px;
+      background: transparent;
+      font-weight: 900;
+    }
+    .menuItem:hover{ background:#f3f4f6; }
+
     /* Teacher settings (collapsible) */
     .teacherbar{
       display:flex;
@@ -237,11 +263,34 @@
       background: linear-gradient(180deg,#ffffff, #f9fafb);
       border: 1px solid #e5e7eb;
       overflow:hidden;
+      position: relative; /* for bottom buttons */
+      min-height: 420px;  /* ensures room for stageActions */
     }
     .svgwrap{
       width:100%;
       height: 360px;
     }
+
+    /* Bottom actions inside the stage */
+    .stageActions{
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+    .stageActions button{ pointer-events: auto; }
+    .stageActions button{
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 950;
+      box-shadow: 0 12px 24px rgba(0,0,0,.10);
+    }
+
     .footerhint{
       margin-top: 10px;
       color: var(--muted);
@@ -311,9 +360,16 @@
     <div class="card">
       <div class="topbar">
         <div><h1>Number line – Missing value</h1></div>
+
         <div class="btnrow">
-          <button id="newBtn" class="primary" title="Space">New Question</button>
-          <button id="revealBtn" class="ghost" title="R">Reveal</button>
+          <div class="menuWrap">
+            <button id="toolsBtn" class="icon" title="Tools">Tools ▾</button>
+            <div id="toolsMenu" class="menu" aria-hidden="true">
+              <button class="menuItem" id="worksheetCreatorBtn">Worksheet creator</button>
+              <button class="menuItem" id="studentQuizBtn">Student Online Quiz</button>
+            </div>
+          </div>
+
           <button id="resetBtn" class="danger" title="Reset difficulty + history">Reset</button>
         </div>
       </div>
@@ -343,11 +399,11 @@
 
           <div class="shortcuts">
             Shortcuts:
-            <span class="kbd">Space</span> new
+            <span class="kbd">Space</span> next
             <span class="kbd">R</span> reveal/hide
-<div class="shortcuts" style="margin-top:6px;">
-  Click tick dots to reveal extra labels (optional).
-</div>
+            <div class="shortcuts" style="margin-top:6px;">
+              Click tick dots to reveal extra labels (optional).
+            </div>
           </div>
         </div>
 
@@ -377,6 +433,11 @@
 
       <div class="stage">
         <svg id="svg" class="svgwrap" viewBox="0 0 1000 360" role="img" aria-label="number line"></svg>
+
+        <div class="stageActions">
+          <button id="revealBtn" class="ghost" title="R">Reveal</button>
+          <button id="nextBtn" class="primary" title="Space">Next question</button>
+        </div>
       </div>
     </div>
   </div>
@@ -398,7 +459,8 @@
   let refs = null; // { labelsByIndex, labelsG, labelY, xFn, dots, ticks }
 
   const svg = document.getElementById('svg');
-  const newBtn = document.getElementById('newBtn');
+
+  const nextBtn = document.getElementById('nextBtn');
   const revealBtn = document.getElementById('revealBtn');
   const resetBtn = document.getElementById('resetBtn');
 
@@ -415,6 +477,12 @@
   const settingsBtn = document.getElementById('settingsBtn');
   const settings = document.getElementById('settings');
   const chev = document.getElementById('chev');
+
+  // Tools menu
+  const toolsBtn = document.getElementById('toolsBtn');
+  const toolsMenu = document.getElementById('toolsMenu');
+  const worksheetCreatorBtn = document.getElementById('worksheetCreatorBtn');
+  const studentQuizBtn = document.getElementById('studentQuizBtn');
 
   const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
   const choice = (arr) => arr[randInt(0, arr.length-1)];
@@ -438,6 +506,35 @@
     chev.classList.toggle('open', settingsOpen);
     settingsBtn.setAttribute('aria-expanded', String(settingsOpen));
   }
+
+  // Tools dropdown helpers
+  function closeTools(){
+    toolsMenu.classList.remove('open');
+    toolsMenu.setAttribute('aria-hidden', 'true');
+  }
+  function toggleTools(){
+    const isOpen = toolsMenu.classList.toggle('open');
+    toolsMenu.setAttribute('aria-hidden', String(!isOpen));
+  }
+
+  toolsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleTools();
+  });
+  document.addEventListener('click', () => closeTools());
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") closeTools();
+  });
+
+  worksheetCreatorBtn.addEventListener('click', () => {
+    closeTools();
+    window.open("integerworksheet.html", "_blank", "noopener,noreferrer");
+  });
+
+  studentQuizBtn.addEventListener('click', () => {
+    closeTools();
+    window.open("studentquiz.html", "_blank", "noopener,noreferrer");
+  });
 
   function signatureFor(question){
     const answer = question.values[question.targetIndex];
@@ -600,7 +697,6 @@
     const dots = [];
 
     function highlightTeacher(idx){
-      // keep it subtle; NO resizing (avoids movement)
       const tick = ticks[idx];
       const dot  = dots[idx];
       if (tick) tick.setAttribute("stroke-width", "5");
@@ -666,12 +762,10 @@
       dots.push(dot);
     }
 
-    // initial anchors
     for (const idx of question.anchors){
       if (idx !== question.targetIndex) ensureLabel(idx, false);
     }
 
-    // mystery box (id fixed: mysteryBox)
     const tx = x(question.targetIndex);
     const boxW=64, boxH=44;
     const boxX = tx - boxW/2;
@@ -707,7 +801,6 @@
   function revealAllLabels(question){
     if (!refs) return;
 
-    // Always remove the mystery box by id (robust)
     svg.querySelector('#mysteryBox')?.remove();
 
     for (let i=0;i<11;i++){
@@ -741,10 +834,8 @@
   function hideToPrompt(question){
     if (!refs) return;
 
-    // clear teacher revealed
     question.teacherRevealed.clear();
 
-    // remove labels that are not anchors
     for (let i=0;i<11;i++){
       const lab = refs.labelsByIndex.get(i);
       if (!lab) continue;
@@ -756,7 +847,6 @@
       }
     }
 
-    // reset highlighting
     for (let i=0;i<11;i++){
       if (refs.ticks[i]) refs.ticks[i].setAttribute("stroke-width", "4");
       if (refs.dots[i]){
@@ -765,7 +855,6 @@
       }
     }
 
-    // restore mystery box if missing
     if (!svg.querySelector('#mysteryBox')){
       const tx = refs.xFn(question.targetIndex);
       const boxW=64, boxH=44;
@@ -838,7 +927,8 @@
     }
   }
 
-  newBtn.addEventListener('click', () => {
+  // Stage buttons
+  nextBtn.addEventListener('click', () => {
     revealed = false;
     q = generateQuestion();
     buildHiddenScene(q);
@@ -850,6 +940,7 @@
     render();
   });
 
+  // Teacher controls
   rangeUp.addEventListener('click', () => {
     rangeLevel = clamp(rangeLevel + RANGE_DELTA, 0, MAX_RANGE_LEVEL);
     revealed = false;
@@ -881,9 +972,15 @@
     setSettingsOpen(!settingsOpen);
   });
 
+  // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
+    // avoid Space triggering when tools menu is open
+    const toolsOpen = toolsMenu.classList.contains('open');
+
     if (e.code === "Space"){
       e.preventDefault();
+      if (toolsOpen) return;
+
       revealed = false;
       q = generateQuestion();
       buildHiddenScene(q);
@@ -896,7 +993,7 @@
     }
   });
 
-  buildStepTabs(); 
+  buildStepTabs();
   setSettingsOpen(false);
   q = generateQuestion();
   buildHiddenScene(q);
