@@ -23,7 +23,6 @@
 
       --border:#e5e7eb;
       --panel:#ffffff;
-      --warn:#f59e0b;
     }
 
     *{ box-sizing:border-box; }
@@ -96,23 +95,6 @@
       font-weight: 900;
     }
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      background:#f3f4f6;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      color:#111827;
-      font-weight: 800;
-    }
-    .pill.warn{
-      background:#fffbeb;
-      color:#92400e;
-      border:1px solid rgba(245,158,11,.25);
-    }
-
     /* ---------- Tools dropdown (robust) ---------- */
     .toolsWrap{
       position: relative;
@@ -174,169 +156,6 @@
       padding: 8px 12px 4px;
     }
 
-    /* Teacher settings (collapsible) */
-    .teacherbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top: 6px;
-      margin-bottom: 10px;
-    }
-    .teacherleft{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .settingsBtn{
-      background:#f3f4f6;
-      color:#111827;
-      border:1px solid #e5e7eb;
-      border-radius:999px;
-    }
-    .chev{
-      display:inline-block;
-      transition: transform .15s ease;
-      font-weight: 900;
-    }
-    .chev.open{ transform: rotate(180deg); }
-
-    .settings{
-      margin-top: 10px;
-      padding-top: 12px;
-      border-top: 1px solid #e5e7eb;
-      display:none;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-    }
-    .settings.open{ display:grid; }
-    @media (max-width: 780px){
-      .settings{ grid-template-columns: 1fr; }
-    }
-    .panel{
-      background:#f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .panel h3{
-      margin:0 0 8px;
-      font-size: 13px;
-      color:#111827;
-      letter-spacing:.2px;
-    }
-
-    .row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .stat{
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 800;
-    }
-    .bigstat{
-      font-size: 14px;
-      font-weight: 900;
-      color:#111827;
-    }
-
-    /* Inputs */
-    .field{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-top: 8px;
-      flex-wrap:wrap;
-    }
-    .field label{
-      font-weight: 900;
-      color:#111827;
-      font-size: 13px;
-    }
-    .inp{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    input[type="text"]{
-      width: 140px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      outline: none;
-      font-weight: 900;
-      color:#111827;
-      background:#fff;
-    }
-    input[type="text"]:focus{
-      border-color: rgba(37,99,235,.45);
-      box-shadow: 0 0 0 4px rgba(37,99,235,.10);
-    }
-    .err{
-      display:none;
-      margin-top: 8px;
-      font-size: 12px;
-      font-weight: 900;
-      color: var(--bad);
-    }
-    .err.show{ display:block; }
-
-    /* Toggle */
-    .toggle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-top: 10px;
-      user-select:none;
-      cursor:pointer;
-    }
-    .switch{
-      width: 44px;
-      height: 26px;
-      border-radius: 999px;
-      background:#e5e7eb;
-      position:relative;
-      border:1px solid #d1d5db;
-      flex: 0 0 auto;
-      transition: background .15s ease;
-    }
-    .knob{
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background:#fff;
-      position:absolute;
-      left:2px;
-      top:1px;
-      box-shadow: 0 6px 14px rgba(0,0,0,.12);
-      transition: transform .15s ease;
-    }
-    .toggle.on .switch{
-      background: rgba(37,99,235,.95);
-      border-color: rgba(37,99,235,.25);
-    }
-    .toggle.on .knob{
-      transform: translateX(18px);
-    }
-    .toggleText{
-      font-weight: 900;
-      font-size: 13px;
-      color:#111827;
-      line-height: 1.15;
-    }
-    .toggleHint{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
     /* Stage */
     .stage{
       margin-top: 14px;
@@ -373,27 +192,6 @@
       box-shadow: 0 12px 24px rgba(0,0,0,.10);
     }
 
-    /* Teacher-only shortcuts hint inside settings */
-    .shortcuts{
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 800;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-size: 12px;
-      background:#111827;
-      color:white;
-      padding: 2px 6px;
-      border-radius: 7px;
-      font-weight: 900;
-    }
-
     /* Solid dots (NO wobble) */
     .tick-dot{
       transition: opacity .12s ease;
@@ -424,6 +222,192 @@
       animation: pop .22s ease-out both;
       transform-origin: center;
     }
+
+    /* ---------- Modal (Teacher settings popup) ---------- */
+    .modalOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(17,24,39,.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+    }
+    .modalOverlay.open{ display:flex; }
+
+    .modal{
+      width: min(920px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 22px 60px rgba(0,0,0,.25);
+      border: 1px solid rgba(229,231,235,.85);
+      overflow: hidden;
+    }
+    .modalHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fafafa;
+    }
+    .modalHeader h2{
+      margin:0;
+      font-size: 16px;
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    .closeBtn{
+      border-radius: 999px;
+      padding: 8px 10px;
+      border: 1px solid #e5e7eb;
+      background:#fff;
+      font-weight: 950;
+    }
+    .modalBody{
+      padding: 16px;
+    }
+
+    .modeGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    @media (max-width: 720px){
+      .modeGrid{ grid-template-columns: 1fr; }
+    }
+    .modeCard{
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+      background: #f9fafb;
+    }
+    .modeCard h3{
+      margin:0 0 8px;
+      font-size: 14px;
+      font-weight: 950;
+    }
+    .modeCard p{
+      margin:0 0 14px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 12px;
+    }
+    .modeCard button{
+      width: 100%;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 950;
+      background:#111827;
+      color:#fff;
+    }
+
+    /* Preset panels */
+    .presetGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (max-width: 820px){
+      .presetGrid{ grid-template-columns: 1fr; }
+    }
+
+    .presetPanel{
+      border-radius: 14px;
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      background: #f9fafb;
+      position: relative;
+    }
+    .presetPanel h3{
+      margin:0 0 10px;
+      font-size: 13px;
+      font-weight: 950;
+      color:#111827;
+      letter-spacing:.2px;
+    }
+    .field{
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    label{
+      font-weight: 950;
+      color:#111827;
+      font-size: 13px;
+    }
+    input[type="text"], select{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      outline: none;
+      font-weight: 900;
+      color:#111827;
+      background:#fff;
+    }
+    input[type="text"]:focus, select:focus{
+      border-color: rgba(37,99,235,.45);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.10);
+    }
+    .err{
+      display:none;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 950;
+      color: var(--bad);
+    }
+    .err.show{ display:block; }
+
+    /* Colour tints like your sketch */
+    .tintGreen{ border-color: rgba(22,163,74,.55); background: rgba(22,163,74,.07); }
+    .tintBlue{  border-color: rgba(37,99,235,.55); background: rgba(37,99,235,.07); }
+    .tintPurple{border-color: rgba(147,51,234,.45); background: rgba(147,51,234,.07); }
+    .tintRed{   border-color: rgba(220,38,38,.45); background: rgba(220,38,38,.07); }
+
+    .modalFooter{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-top: 1px solid #e5e7eb;
+      background:#fafafa;
+      flex-wrap:wrap;
+    }
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 850;
+    }
+    .footerBtns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .preview{
+      margin-top: 12px;
+      font-size: 12px;
+      color: #111827;
+      font-weight: 850;
+      background:#eff6ff;
+      border: 1px solid rgba(37,99,235,.18);
+      padding: 10px 12px;
+      border-radius: 12px;
+      display:none;
+    }
+    .preview.show{ display:block; }
+
+    .backBtn{
+      border: 1px solid #e5e7eb;
+      background:#fff;
+      font-weight: 950;
+    }
   </style>
 </head>
 <body>
@@ -444,72 +428,8 @@
             </div>
           </div>
 
+          <button id="teacherBtn" class="icon" title="Teacher settings">Teacher settings</button>
           <button id="resetBtn" class="danger" title="Reset settings + history">Reset</button>
-        </div>
-      </div>
-
-      <div class="teacherbar">
-        <div class="teacherleft">
-          <button id="settingsBtn" class="settingsBtn icon" aria-expanded="false">
-            <span style="font-weight:900;">Teacher settings</span>
-            <span id="chev" class="chev">▼</span>
-          </button>
-
-          <span class="pill" id="summaryPill">step 1 · midpoint 0</span>
-          <span class="pill" id="negPill">Negatives: off</span>
-          <span class="pill" id="modePill">Hidden</span>
-          <span class="pill warn" id="pendingPill" style="display:none;">Pending changes (apply on Next)</span>
-        </div>
-      </div>
-
-      <div id="settings" class="settings">
-        <div class="panel">
-          <h3>Step size</h3>
-          <div class="field">
-            <label for="stepInput">Enter step size</label>
-            <div class="inp">
-              <input id="stepInput" type="text" inputmode="decimal" autocomplete="off" />
-            </div>
-          </div>
-          <div class="row" style="margin-top:10px;">
-            <div class="stat">Max:</div>
-            <div class="bigstat">1000</div>
-            <div class="stat">· 1 decimal place</div>
-          </div>
-          <div class="err" id="stepErr">Please enter a number greater than 0 (up to 1000), max 1 decimal place.</div>
-
-          <div class="shortcuts">
-            Shortcuts:
-            <span class="kbd">Space</span> next
-            <span class="kbd">R</span> reveal/hide
-            <div class="shortcuts" style="margin-top:6px;">
-              Click tick dots to reveal extra labels (optional).
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3>Midpoint (middle tick value)</h3>
-          <div class="field">
-            <label for="midInput">Enter midpoint</label>
-            <div class="inp">
-              <input id="midInput" type="text" inputmode="decimal" autocomplete="off" />
-            </div>
-          </div>
-          <div class="row" style="margin-top:10px;">
-            <div class="stat">Range:</div>
-            <div class="bigstat">-10000 to 10000</div>
-            <div class="stat">· 1 decimal place</div>
-          </div>
-          <div class="err" id="midErr">Please enter a number from -10000 to 10000, max 1 decimal place.</div>
-
-          <div class="toggle" id="negToggle" title="Bias questions toward negative-side missing values when negatives exist on the line">
-            <div class="switch"><div class="knob"></div></div>
-            <div>
-              <div class="toggleText">Prefer negatives</div>
-              <div class="toggleHint">Only applies if the line includes negatives.</div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -519,6 +439,25 @@
         <div class="stageActions">
           <button id="revealBtn" class="ghost" title="R">Reveal (R)</button>
           <button id="nextBtn" class="primary" title="Space">Next Question (Space)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher settings modal -->
+  <div id="modalOverlay" class="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalHeader">
+        <h2 id="modalTitle">Teacher settings</h2>
+        <button id="closeModalBtn" class="closeBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modalBody" id="modalBody">
+        <!-- content injected by JS -->
+      </div>
+      <div class="modalFooter">
+        <div class="hint" id="footerHint">Shortcuts: Space = next · R = reveal/hide</div>
+        <div class="footerBtns" id="footerBtns">
+          <!-- buttons injected by JS -->
         </div>
       </div>
     </div>
@@ -534,15 +473,15 @@
   // Current applied settings
   let step = 1.0;
   let midpoint = 0.0;
-  let preferNegatives = false;
 
-  // Pending settings (apply on Next)
-  let pendingStep = step;
-  let pendingMid  = midpoint;
-  let pendingDirty = false;
+  // Prefer negatives is now ALWAYS on (no UI), but only applies if negatives exist on the line.
+  const preferNegatives = true;
 
   let revealed = false;
-  let settingsOpen = false;
+
+  // Teacher settings mode
+  let activeMode = "manual"; // "manual" | "preset"
+  let activePreset = null;   // { group: string, id: string }
 
   let q = null;
   const last5 = [];
@@ -554,24 +493,13 @@
   const nextBtn = document.getElementById('nextBtn');
   const revealBtn = document.getElementById('revealBtn');
   const resetBtn = document.getElementById('resetBtn');
+  const teacherBtn = document.getElementById('teacherBtn');
 
-  const summaryPill = document.getElementById('summaryPill');
-  const modePill = document.getElementById('modePill');
-  const negPill = document.getElementById('negPill');
-  const pendingPill = document.getElementById('pendingPill');
-
-  const settingsBtn = document.getElementById('settingsBtn');
-  const settings = document.getElementById('settings');
-  const chev = document.getElementById('chev');
-
-  // Inputs
-  const stepInput = document.getElementById('stepInput');
-  const midInput  = document.getElementById('midInput');
-  const stepErr   = document.getElementById('stepErr');
-  const midErr    = document.getElementById('midErr');
-
-  // Prefer negatives toggle
-  const negToggle = document.getElementById('negToggle');
+  // Modal elements
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const modalBody = document.getElementById('modalBody');
+  const footerBtns = document.getElementById('footerBtns');
 
   // Tools dropdown elements
   const toolsWrap = document.getElementById('toolsWrap');
@@ -584,7 +512,6 @@
 
   const randInt = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
   const choice = (arr) => arr[randInt(0, arr.length-1)];
-  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
   function round1(x){ return Math.round(x * 10) / 10; }
 
@@ -599,34 +526,12 @@
   function parseOneDecimal(str){
     const s = (str ?? "").trim();
     if (!s) return { ok:false };
-    // allow leading +/-, digits, optional .digits
     if (!/^[+-]?\d+(\.\d+)?$/.test(s)) return { ok:false };
     const n = Number(s);
     if (!Number.isFinite(n)) return { ok:false };
-    // enforce <= 1 decimal place
     const oneDec = round1(n);
     if (Math.abs(n - oneDec) > 1e-6) return { ok:false };
     return { ok:true, value: oneDec };
-  }
-
-  function setPendingDirty(on){
-    pendingDirty = on;
-    pendingPill.style.display = pendingDirty ? "inline-flex" : "none";
-  }
-
-  function updatePills(){
-    summaryPill.textContent = `step ${fmt(step)} · midpoint ${fmt(midpoint)}`;
-    negPill.textContent = `Negatives: ${preferNegatives ? "prefer" : "off"}`;
-    modePill.textContent = revealed ? "Revealed" : "Hidden";
-    revealBtn.textContent = revealed ? "Hide (R)" : "Reveal (R)";
-    negToggle.classList.toggle("on", preferNegatives);
-  }
-
-  function setSettingsOpen(open){
-    settingsOpen = open;
-    settings.classList.toggle('open', settingsOpen);
-    chev.classList.toggle('open', settingsOpen);
-    settingsBtn.setAttribute('aria-expanded', String(settingsOpen));
   }
 
   // ---------- Tools dropdown: robust open/close ----------
@@ -673,20 +578,15 @@
   // "Nice anchor" scoring (float-safe)
   function isNiceAnchor(v){
     const av = Math.abs(v);
-
-    // Prefer integers strongly
     const isInt = Math.abs(v - Math.round(v)) < EPS;
 
     if (!isInt) {
-      // If not integer, still treat .0 (handled above) and allow 0.5-style as mildly "nice"
-      // but less nice than integers.
       const frac = Math.abs(v - Math.floor(v));
       const isHalf = Math.abs(frac - 0.5) < EPS;
-      if (isHalf) return av < 10; // only "nice" at small magnitudes
+      if (isHalf) return av < 10;
       return false;
     }
 
-    // Integer rules (same spirit as your original)
     const iv = Math.round(v);
     if (av >= 100) return iv % 100 === 0 || iv % 10 === 0;
     if (av >= 10)  return iv % 10 === 0;
@@ -753,10 +653,8 @@
   }
 
   function chooseTargetIndex(values){
-    // Weighted like before, but optionally bias toward negative values
     const anyNeg = values.some(v => v < 0);
 
-    // base weights
     const weightedAll = [];
     for (let i=0;i<11;i++){
       let w = 1;
@@ -769,13 +667,12 @@
       const negIdx = values.map((v,i)=> (v < 0 ? i : null)).filter(v => v !== null);
       const weightedNeg = [];
       for (const i of negIdx){
-        let w = 1.15; // slight boost
+        let w = 1.15;
         if (i===0 || i===10) w = 0.95;
         if (i===5) w = 1.0;
         for (let k=0;k<Math.round(w*10);k++) weightedNeg.push(i);
       }
 
-      // 70%: pick from negative side, else normal
       if (weightedNeg.length && Math.random() < 0.70){
         return choice(weightedNeg);
       }
@@ -785,7 +682,6 @@
   }
 
   function generateQuestion(){
-    // With fixed midpoint + step, only target/anchors vary.
     for (let attempt=0; attempt<120; attempt++){
       const values = buildValuesFromMidpoint();
       const targetIndex = chooseTargetIndex(values);
@@ -809,7 +705,6 @@
       return question;
     }
 
-    // Fallback
     const values = buildValuesFromMidpoint();
     return {
       values,
@@ -1058,8 +953,6 @@
   }
 
   function render(){
-    updatePills();
-
     if (!q){
       q = generateQuestion();
       revealed = false;
@@ -1079,7 +972,7 @@
     }
   }
 
-  // ---------- Validation + pending settings ----------
+  // ---------- Validation ----------
   function validateStepField(s){
     const parsed = parseOneDecimal(s);
     if (!parsed.ok) return { ok:false };
@@ -1094,56 +987,132 @@
     return parsed;
   }
 
-  function syncFieldsFromApplied(){
-    stepInput.value = fmt(step);
-    midInput.value  = fmt(midpoint);
-    stepErr.classList.remove("show");
-    midErr.classList.remove("show");
-    setPendingDirty(false);
-    pendingStep = step;
-    pendingMid  = midpoint;
-  }
+  // ---------- Presets ----------
+  const POS_PRESETS = [
+    { id:"pos_0_10",   label:"Numbers from 0 to 10",     min:0,   max:10,  desiredMidMin:5, desiredMidMax:10, steps:[1] },
+    { id:"pos_0_20",   label:"Numbers from 0 to 20",     min:0,   max:20,  desiredMidMin:5, desiredMidMax:20, steps:[1] },
+    { id:"pos_0_20_h", label:"Harder 0 to 20",           min:0,   max:20,  desiredMidMin:5, desiredMidMax:20, steps:[1,2,5] },
+    { id:"pos_0_100",  label:"Numbers from 0 to 100",    min:0,   max:100, desiredMidMin:5, desiredMidMax:100, steps:[1,2,5,10] },
+    { id:"pos_0_100_h",label:"Harder 0 to 100",          min:0,   max:100, desiredMidMin:5, desiredMidMax:100, steps:[1,2,3,4,5,6,7,8,9,10] },
+    { id:"pos_0_200",  label:"Numbers 0 to 200",         min:0,   max:200, desiredMidMin:5, desiredMidMax:200, steps:[1,2,5,10] },
+    { id:"pos_0_200_h",label:"Harder 0 to 200",          min:0,   max:200, desiredMidMin:5, desiredMidMax:200, steps:[1,2,3,4,5,6,7,8,9,10] },
+  ];
 
-  function handleStepInput(){
-    const v = validateStepField(stepInput.value);
-    if (!v.ok){
-      stepErr.classList.add("show");
-      return false;
+  const INT_PRESETS = [
+    { id:"int_10",     label:"Integers -10 to 10",          min:-10,   max:10,   desiredMidMin:-10,  desiredMidMax:10,  steps:[1] },
+    { id:"int_10_h",   label:"-10 to 10 harder",            min:-10,   max:10,   desiredMidMin:-10,  desiredMidMax:10,  steps:[1,2,3,4] },
+    { id:"int_20",     label:"Integers -20 to 20",          min:-20,   max:20,   desiredMidMin:-20,  desiredMidMax:20,  steps:[1,2,5] },
+    { id:"int_20_h",   label:"-20 to 20 harder",            min:-20,   max:20,   desiredMidMin:-20,  desiredMidMax:20,  steps:[1,2,3,4,5] },
+    { id:"int_100",    label:"Integers -100 to 100",        min:-100,  max:100,  desiredMidMin:-100, desiredMidMax:100, steps:[1,2,5,10] },
+    { id:"int_100_h",  label:"-100 to 100 harder",          min:-100,  max:100,  desiredMidMin:-100, desiredMidMax:100, steps:[1,2,3,4,5,6,7,8,9,10] },
+    { id:"int_1000",   label:"Integers -1000 to 1000",      min:-1000, max:1000, desiredMidMin:-1000,desiredMidMax:1000,steps:[1,2,10,100] },
+    { id:"int_1000_h", label:"-1000 to 1000 harder",        min:-1000, max:1000, desiredMidMin:-1000,desiredMidMax:1000,steps:[1,2,3,4,5,6,7,8,9,10,20,50,100,150] },
+  ];
+
+  // Expand steps for halves mode: allow x or x+0.5 (x+0.5 only), and keep unique.
+  function stepsWithHalves(baseSteps){
+    const out = [];
+    for (const x of baseSteps){
+      out.push(x);
+      out.push(round1(x + 0.5));
     }
-    stepErr.classList.remove("show");
-    pendingStep = v.value;
-    setPendingDirty(Math.abs(pendingStep - step) > EPS || Math.abs(pendingMid - midpoint) > EPS);
-    return true;
+    // unique
+    return [...new Set(out.map(v => round1(v)))].sort((a,b)=>a-b);
   }
 
-  function handleMidInput(){
-    const v = validateMidField(midInput.value);
-    if (!v.ok){
-      midErr.classList.add("show");
-      return false;
+  function getPresetById(group, id){
+    let list = null;
+    if (group === "posWhole" || group === "posHalves") list = POS_PRESETS;
+    if (group === "intWhole" || group === "negHalves") list = INT_PRESETS;
+    return (list || []).find(p => p.id === id) || null;
+  }
+
+  function computePreviewText(preset, halves){
+    const steps = halves ? stepsWithHalves(preset.steps) : preset.steps;
+    const stepList = steps.map(fmt).join(", ");
+    const halfNote = halves ? " Midpoint and step may include halves (.5)." : "";
+    return `Range: ${preset.min} to ${preset.max}. Step size will be one of: ${stepList}. Midpoint is random (auto-fitted so the 11-tick line stays within the range).${halfNote}`;
+  }
+
+  function randHalfStep(min, max){
+    // choose a value in [min,max] in increments of 0.5
+    const a = Math.ceil(min * 2);
+    const b = Math.floor(max * 2);
+    if (a > b) return null;
+    return randInt(a, b) / 2;
+  }
+
+  function rollPreset(preset, halves){
+    // No spill: midpoint in [min+5*step, max-5*step]
+    // Approach A: auto-raise/lower desired midpoint range based on step.
+    const stepChoices = halves ? stepsWithHalves(preset.steps) : preset.steps;
+
+    for (let attempt=0; attempt<260; attempt++){
+      const stepChoice = choice(stepChoices);
+
+      const hardMin = preset.min + 5 * stepChoice;
+      const hardMax = preset.max - 5 * stepChoice;
+      if (hardMin > hardMax) continue;
+
+      const desiredMin = preset.desiredMidMin;
+      const desiredMax = preset.desiredMidMax;
+
+      const midMin = Math.max(hardMin, desiredMin);
+      const midMax = Math.min(hardMax, desiredMax);
+      if (midMin > midMax) continue;
+
+      let midChoice;
+      if (halves){
+        midChoice = randHalfStep(midMin, midMax);
+        if (midChoice === null) continue;
+      } else {
+        const a = Math.ceil(midMin);
+        const b = Math.floor(midMax);
+        if (a > b) continue;
+        midChoice = randInt(a, b);
+      }
+
+      step = round1(stepChoice);
+      midpoint = round1(midChoice);
+      return true;
     }
-    midErr.classList.remove("show");
-    pendingMid = v.value;
-    setPendingDirty(Math.abs(pendingStep - step) > EPS || Math.abs(pendingMid - midpoint) > EPS);
-    return true;
+
+    // fallback: find a step that fits, then choose midpoint
+    const sortedSteps = [...stepChoices].sort((a,b)=>a-b);
+    for (const s of sortedSteps){
+      const hardMin = preset.min + 5 * s;
+      const hardMax = preset.max - 5 * s;
+      if (hardMin > hardMax) continue;
+
+      let midChoice;
+      if (halves){
+        midChoice = randHalfStep(hardMin, hardMax);
+        if (midChoice === null) continue;
+      } else {
+        midChoice = randInt(Math.ceil(hardMin), Math.floor(hardMax));
+      }
+      step = round1(s);
+      midpoint = round1(midChoice);
+      return true;
+    }
+    return false;
   }
 
-  function applyPendingIfValid(){
-    const okStep = handleStepInput();
-    const okMid  = handleMidInput();
-    if (!okStep || !okMid) return false;
+  function maybeRollPresetForNext(){
+    if (activeMode !== "preset" || !activePreset) return true;
 
-    // apply
-    step = pendingStep;
-    midpoint = pendingMid;
-    setPendingDirty(false);
-    return true;
+    // groups:
+    // posWhole, posHalves, intWhole, negHalves
+    const halves = (activePreset.group === "posHalves" || activePreset.group === "negHalves");
+    const preset = getPresetById(activePreset.group, activePreset.id);
+    if (!preset) return true;
+    return rollPreset(preset, halves);
   }
 
-  // Apply inputs only on Next
+  // ---------- Next / Reveal / Reset ----------
   function nextQuestion(){
-    // Try apply pending; if invalid, don't advance
-    if (!applyPendingIfValid()) return;
+    // If preset mode, roll step+midpoint each Next
+    maybeRollPresetForNext();
 
     revealed = false;
     q = generateQuestion();
@@ -1151,17 +1120,6 @@
     render();
   }
 
-  // Input listeners: validate and mark pending, but do not regenerate
-  stepInput.addEventListener("input", () => { handleStepInput(); });
-  midInput.addEventListener("input",  () => { handleMidInput(); });
-
-  // Toggle
-  negToggle.addEventListener("click", () => {
-    preferNegatives = !preferNegatives;
-    updatePills();
-  });
-
-  // Bottom buttons
   nextBtn.addEventListener('click', () => nextQuestion());
 
   revealBtn.addEventListener('click', () => {
@@ -1170,25 +1128,32 @@
   });
 
   resetBtn.addEventListener('click', () => {
+    // reset to manual defaults
+    activeMode = "manual";
+    activePreset = null;
+
     step = 1.0;
     midpoint = 0.0;
-    preferNegatives = false;
 
     revealed = false;
     last5.length = 0;
     q = null;
 
-    syncFieldsFromApplied();
+    closeModal();
     clearSVG();
-    render();
+    nextQuestion(); // regenerate instantly
   });
 
-  settingsBtn.addEventListener('click', () => {
-    setSettingsOpen(!settingsOpen);
-  });
-
-  // Keyboard shortcuts
+  // Keyboard shortcuts (disabled while modal is open)
   document.addEventListener('keydown', (e) => {
+    if (isModalOpen()){
+      if (e.key === "Escape"){
+        e.preventDefault();
+        closeModal();
+      }
+      return;
+    }
+
     if (e.code === "Space"){
       e.preventDefault();
       nextQuestion();
@@ -1200,13 +1165,302 @@
     }
   });
 
-  // Initial state: auto load midpoint=0 step=1
-  setSettingsOpen(false);
-  syncFieldsFromApplied();
+  // ---------- Modal UI ----------
+  function isModalOpen(){
+    return modalOverlay.classList.contains("open");
+  }
+  function openModal(){
+    modalOverlay.classList.add("open");
+    modalOverlay.setAttribute("aria-hidden", "false");
+    showChooseModeView();
+  }
+  function closeModal(){
+    modalOverlay.classList.remove("open");
+    modalOverlay.setAttribute("aria-hidden", "true");
+  }
+
+  teacherBtn.addEventListener("click", () => openModal());
+  closeModalBtn.addEventListener("click", () => closeModal());
+
+  // click outside closes
+  modalOverlay.addEventListener("click", (e) => {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  function setFooterButtons(btns){
+    footerBtns.innerHTML = "";
+    for (const b of btns) footerBtns.appendChild(b);
+  }
+
+  function makeBtn(text, opts={}){
+    const b = document.createElement("button");
+    b.textContent = text;
+    if (opts.className) b.className = opts.className;
+    if (opts.onClick) b.addEventListener("click", opts.onClick);
+    return b;
+  }
+
+  function showChooseModeView(){
+    modalBody.innerHTML = `
+      <div style="font-weight:950; font-size:14px;">Choose your mode</div>
+      <div class="modeGrid">
+        <div class="modeCard">
+          <h3>Manual mode</h3>
+          <p>Teacher sets the step size and midpoint.</p>
+          <button id="pickManual">Manual mode</button>
+        </div>
+        <div class="modeCard">
+          <h3>Preset mode</h3>
+          <p>Pick a preset. The tool rolls step + midpoint (no spill) each question.</p>
+          <button id="pickPreset">Preset mode</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("pickManual").addEventListener("click", () => showManualView());
+    document.getElementById("pickPreset").addEventListener("click", () => showPresetView());
+
+    setFooterButtons([
+      makeBtn("Close", { className:"backBtn", onClick: () => closeModal() })
+    ]);
+  }
+
+  function showManualView(){
+    modalBody.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div style="font-weight:950; font-size:14px;">Manual mode</div>
+        <div style="color:var(--muted); font-weight:850; font-size:12px;">Press Enter to apply & generate</div>
+      </div>
+
+      <div class="presetGrid" style="margin-top:12px;">
+        <div class="presetPanel" style="background:#f9fafb; border-color:#e5e7eb;">
+          <h3>Step size</h3>
+          <div class="field">
+            <label for="mStep">Enter step size</label>
+            <input id="mStep" type="text" inputmode="decimal" autocomplete="off" />
+            <div class="err" id="mStepErr">Please enter a number greater than 0 (up to 1000), max 1 decimal place.</div>
+          </div>
+        </div>
+
+        <div class="presetPanel" style="background:#f9fafb; border-color:#e5e7eb;">
+          <h3>Midpoint</h3>
+          <div class="field">
+            <label for="mMid">Enter midpoint (middle tick value)</label>
+            <input id="mMid" type="text" inputmode="decimal" autocomplete="off" />
+            <div class="err" id="mMidErr">Please enter a number from -10000 to 10000, max 1 decimal place.</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const mStep = document.getElementById("mStep");
+    const mMid  = document.getElementById("mMid");
+    const mStepErr = document.getElementById("mStepErr");
+    const mMidErr  = document.getElementById("mMidErr");
+
+    mStep.value = fmt(step);
+    mMid.value  = fmt(midpoint);
+
+    function validate(){
+      const vs = validateStepField(mStep.value);
+      const vm = validateMidField(mMid.value);
+
+      mStepErr.classList.toggle("show", !vs.ok);
+      mMidErr.classList.toggle("show", !vm.ok);
+
+      if (!vs.ok || !vm.ok) return null;
+      return { step: vs.value, mid: vm.value };
+    }
+
+    function applyAndGenerate(){
+      const v = validate();
+      if (!v) return;
+
+      activeMode = "manual";
+      activePreset = null;
+
+      step = v.step;
+      midpoint = v.mid;
+
+      closeModal();
+      nextQuestion();
+    }
+
+    [mStep, mMid].forEach(inp => {
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter"){
+          e.preventDefault();
+          applyAndGenerate();
+        }
+      });
+      inp.addEventListener("input", () => validate());
+    });
+
+    setFooterButtons([
+      makeBtn("Back", { className:"backBtn", onClick: () => showChooseModeView() }),
+      makeBtn("Enter", { className:"primary", onClick: () => applyAndGenerate() }),
+    ]);
+  }
+
+  function showPresetView(){
+    modalBody.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div style="font-weight:950; font-size:14px;">Preset mode</div>
+        <div style="color:var(--muted); font-weight:850; font-size:12px;">Press Enter to apply & generate</div>
+      </div>
+
+      <div class="presetGrid">
+        <div class="presetPanel tintGreen">
+          <h3>Positive – Whole numbers</h3>
+          <div class="field">
+            <label for="posWholeSelect">Choose a preset</label>
+            <select id="posWholeSelect">
+              <option value="">— Select —</option>
+              ${POS_PRESETS.map(p => `<option value="${p.id}">${p.label}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="presetPanel tintPurple">
+          <h3>Integers</h3>
+          <div class="field">
+            <label for="intWholeSelect">Choose a preset</label>
+            <select id="intWholeSelect">
+              <option value="">— Select —</option>
+              ${INT_PRESETS.map(p => `<option value="${p.id}">${p.label}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="presetPanel tintBlue">
+          <h3>Positive – halves</h3>
+          <div class="field">
+            <label for="posHalfSelect">Choose a preset</label>
+            <select id="posHalfSelect">
+              <option value="">— Select —</option>
+              ${POS_PRESETS.map(p => `<option value="${p.id}">${p.label}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="presetPanel tintRed">
+          <h3>Negative – halves</h3>
+          <div class="field">
+            <label for="negHalfSelect">Choose a preset</label>
+            <select id="negHalfSelect">
+              <option value="">— Select —</option>
+              ${INT_PRESETS.map(p => `<option value="${p.id}">${p.label}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="presetPreview" class="preview"></div>
+      <div class="err" id="presetErr" style="margin-top:10px;">Please choose exactly one preset.</div>
+    `;
+
+    const posWholeSelect = document.getElementById("posWholeSelect");
+    const intWholeSelect = document.getElementById("intWholeSelect");
+    const posHalfSelect  = document.getElementById("posHalfSelect");
+    const negHalfSelect  = document.getElementById("negHalfSelect");
+    const presetPreview = document.getElementById("presetPreview");
+    const presetErr = document.getElementById("presetErr");
+
+    presetErr.classList.remove("show");
+
+    // Load current selection
+    if (activeMode === "preset" && activePreset){
+      if (activePreset.group === "posWhole") posWholeSelect.value = activePreset.id;
+      if (activePreset.group === "intWhole") intWholeSelect.value = activePreset.id;
+      if (activePreset.group === "posHalves") posHalfSelect.value = activePreset.id;
+      if (activePreset.group === "negHalves") negHalfSelect.value = activePreset.id;
+    }
+
+    function clearOthers(except){
+      const all = [posWholeSelect, intWholeSelect, posHalfSelect, negHalfSelect];
+      for (const sel of all){
+        if (sel !== except) sel.value = "";
+      }
+    }
+
+    function currentSelection(){
+      if (posWholeSelect.value) return { group:"posWhole", id: posWholeSelect.value };
+      if (intWholeSelect.value) return { group:"intWhole", id: intWholeSelect.value };
+      if (posHalfSelect.value)  return { group:"posHalves", id: posHalfSelect.value };
+      if (negHalfSelect.value)  return { group:"negHalves", id: negHalfSelect.value };
+      return null;
+    }
+
+    function updatePreview(){
+      presetErr.classList.remove("show");
+      const sel = currentSelection();
+      if (!sel){
+        presetPreview.classList.remove("show");
+        presetPreview.textContent = "";
+        return;
+      }
+
+      const halves = (sel.group === "posHalves" || sel.group === "negHalves");
+      const preset = getPresetById(sel.group, sel.id);
+      if (!preset){
+        presetPreview.classList.remove("show");
+        presetPreview.textContent = "";
+        return;
+      }
+
+      presetPreview.textContent = computePreviewText(preset, halves);
+      presetPreview.classList.add("show");
+    }
+
+    // Mutually exclusive
+    posWholeSelect.addEventListener("change", () => { if (posWholeSelect.value) clearOthers(posWholeSelect); updatePreview(); });
+    intWholeSelect.addEventListener("change", () => { if (intWholeSelect.value) clearOthers(intWholeSelect); updatePreview(); });
+    posHalfSelect.addEventListener("change",  () => { if (posHalfSelect.value)  clearOthers(posHalfSelect);  updatePreview(); });
+    negHalfSelect.addEventListener("change",  () => { if (negHalfSelect.value)  clearOthers(negHalfSelect);  updatePreview(); });
+
+    updatePreview();
+
+    function applyPresetAndGenerate(){
+      const sel = currentSelection();
+      if (!sel){
+        presetErr.classList.add("show");
+        return;
+      }
+
+      activeMode = "preset";
+      activePreset = sel;
+
+      // Roll immediately (apply & generate instantly)
+      maybeRollPresetForNext();
+
+      closeModal();
+      nextQuestion();
+    }
+
+    // Enter key triggers apply
+    [posWholeSelect, intWholeSelect, posHalfSelect, negHalfSelect].forEach(sel => {
+      sel.addEventListener("keydown", (e) => {
+        if (e.key === "Enter"){
+          e.preventDefault();
+          applyPresetAndGenerate();
+        }
+      });
+    });
+
+    setFooterButtons([
+      makeBtn("Back", { className:"backBtn", onClick: () => showChooseModeView() }),
+      makeBtn("Enter", { className:"primary", onClick: () => applyPresetAndGenerate() }),
+    ]);
+  }
+
+  // ---------- Initial ----------
+  activeMode = "manual";
+  activePreset = null;
 
   q = generateQuestion();
   buildHiddenScene(q);
   render();
+
 })();
 </script>
 </body>
